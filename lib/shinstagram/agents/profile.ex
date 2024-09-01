@@ -8,7 +8,7 @@ defmodule Shinstagram.Agents.Profile do
   alias Shinstagram.Profiles
 
   # what our agent likes doing
-  @actions_probabilities [{:post, 0.7}, {:look, 0.2}, {:sleep, 0.1}]
+  @actions_probabilities [{:post, 0.5}, {:look, 0.25}, {:sleep, 0.25}]
   # how fast our agent thinks
   @cycle_time 1000
   # channel that agents subscribe to
@@ -38,7 +38,9 @@ defmodule Shinstagram.Agents.Profile do
 
   def handle_info(:sleep, %{profile: profile} = state) do
     broadcast({:action, "💤", "I'm going back to sleep..."}, profile)
-    Shinstagram.Profiles.update_profile(profile, %{pid: nil})
+
+    profile = Profiles.get_profile!(profile.id)
+    {:ok, _} = Profiles.update_profile(profile, %{pid: nil})
 
     {:stop, :normal, state}
   end
@@ -173,17 +175,13 @@ defmodule Shinstagram.Agents.Profile do
       |> String.to_charlist()
       |> :erlang.list_to_pid()
 
-    profile = Profiles.get_profile_by_pid!(pid)
-    broadcast({:action, "💤", "I'm going back to sleep..."}, profile)
+    Process.send(self(), :sleep, [])
     GenServer.stop(pid, :normal, timeout)
-    Profiles.update_profile(profile, %{pid: nil})
   end
 
   def shutdown_profile(pid, timeout) do
-    profile = Profiles.get_profile_by_pid!(pid)
-    broadcast({:action, "💤", "I'm going back to sleep..."}, profile)
+    Process.send(self(), :sleep, [])
     GenServer.stop(pid, :normal, timeout)
-    Profiles.update_profile(profile, %{pid: nil})
   end
 
   # helpers

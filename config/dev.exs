@@ -2,8 +2,8 @@ import Config
 
 # Configure your database
 config :shinstagram, Shinstagram.Repo,
-  username: "postgres",
-  password: "postgres",
+  username: "root",
+  password: "password",
   hostname: "localhost",
   database: "shinstagram_dev",
   stacktrace: true,

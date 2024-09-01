@@ -33,8 +33,8 @@ config :ex_aws,
   secret_access_key: System.get_env("CLOUDFLARE_SECRET_ACCESS_KEY"),
   s3: [
     scheme: "https://",
-    host: "f8cf3fdd7d34cbe87d92a631b818efa1.r2.cloudflarestorage.com",
-    region: "us-east-1"
+    host: System.get_env("CLOUDFLARE_HOST"),
+    region: "auto"
   ]
 
 if config_env() == :prod do

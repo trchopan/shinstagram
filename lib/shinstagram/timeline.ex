@@ -12,7 +12,7 @@ defmodule Shinstagram.Timeline do
   alias Shinstagram.Timeline.{Post, Like}
   require Logger
 
-  @model "gpt-4"
+  @model "gpt-4o"
   @dumb_model "gpt-3.5-turbo"
 
   def log(message) do

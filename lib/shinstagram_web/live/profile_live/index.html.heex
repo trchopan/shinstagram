@@ -17,9 +17,9 @@
   <:col :let={{_id, profile}} label="Username"><%= profile.username %></:col>
   <:action :let={{_id, profile}}>
     <div class="sr-only">
-      <.link navigate={~p"/#{profile}"}>Show</.link>
+      <.link navigate={~p"/#{profile.username}"}>Show</.link>
     </div>
-    <.link patch={~p"/profiles/#{profile}/edit"}>Edit</.link>
+    <.link patch={~p"/profiles/#{profile.username}/edit"}>Edit</.link>
   </:action>
   <:action :let={{id, profile}}>
     <.link

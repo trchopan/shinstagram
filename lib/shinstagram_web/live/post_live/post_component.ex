@@ -30,6 +30,9 @@ defmodule ShinstagramWeb.PostLive.PostComponent do
         <button phx-click="comment" phx-value-post-id={@post.id}>
           <.icon name="hero-chat-bubble-oval-left" class="h-6 w-6 mt-3 hover:text-gray-500" />
         </button>
+        <button phx-click="delete" phx-value-post-id={@post.id}>
+          <.icon name="hero-trash" class="h-6 w-6 mt-3 hover:text-gray-500" />
+        </button>
 
         <%!-- Likes --%>
         <div class="text-xs mt-2">

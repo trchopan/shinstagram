@@ -24,7 +24,10 @@ defmodule Shinstagram.ProfileSupervisor do
 
   def add_asleep_profile() do
     profile = Profiles.get_random_asleep_profile()
-    {:ok, pid} = DynamicSupervisor.start_child(@me, {Shinstagram.Agents.Profile, profile})
-    Profiles.update_profile(profile, %{pid: inspect(pid)})
+
+    if profile != nil do
+      {:ok, pid} = DynamicSupervisor.start_child(@me, {Shinstagram.Agents.Profile, profile})
+      Profiles.update_profile(profile, %{pid: inspect(pid)})
+    end
   end
 end

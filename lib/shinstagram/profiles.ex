@@ -8,11 +8,9 @@ defmodule Shinstagram.Profiles do
   import AI
 
   alias Shinstagram.Profiles.Profile
-  alias Shinstagram.Utils
   require Logger
 
-  @model "gpt-4"
-  @dumb_model "gpt-3.5-turbo"
+  @model "gpt-4o"
 
   def reset_all_pids do
     from(p in Profile)
@@ -42,7 +40,7 @@ defmodule Shinstagram.Profiles do
     {:ok, image} =
       profile
       |> gen_profile_photo_prompt()
-      |> Utils.gen_image()
+      |> Shinstagram.AI.gen_image()
 
     profile
     |> update_profile(%{profile_photo: image})
@@ -58,7 +56,7 @@ defmodule Shinstagram.Profiles do
     user: Username: #{username} Summary: #{summary} Vibe: #{vibe}
     """
     |> OpenAI.chat_completion()
-    |> Utils.parse_chat()
+    |> AI.parse_chat()
   end
 
   @doc """
@@ -77,7 +75,7 @@ defmodule Shinstagram.Profiles do
     vibe: Futuristic - Clean lines, neon glows, dark backgrounds with bright, colorful accents.
     """
     |> OpenAI.chat_completion()
-    |> Utils.parse_chat()
+    |> Shinstagram.AI.parse_chat()
   end
 
   @doc """

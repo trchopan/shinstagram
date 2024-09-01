@@ -36,8 +36,8 @@ defmodule ShinstagramWeb.PostLive.Index do
     {:noreply, stream_insert(socket, :posts, post)}
   end
 
-  def handle_event("post", _, socket) do
-    profile = Profiles.get_profile_by_username!("cosmos_coder_AI")
+  def handle_event("post", %{"username" => username}, socket) do
+    profile = Profiles.get_profile_by_username!(username)
     [post] = Timeline.list_recent_posts(1)
 
     Timeline.create_like(profile, post)
@@ -79,8 +79,15 @@ defmodule ShinstagramWeb.PostLive.Index do
   end
 
   @impl true
-  def handle_event("delete", %{"id" => id}, socket) do
+  def handle_event("delete", %{"post-id" => id} = params, socket) do
     post = Timeline.get_post!(id)
+
+    Timeline.list_comments(post)
+    |> Enum.each(&Timeline.delete_comment/1)
+
+    Timeline.get_likes_by_post_id(post.id)
+    |> Enum.each(&Timeline.delete_like/1)
+
     {:ok, _} = Timeline.delete_post(post)
 
     {:noreply, stream_delete(socket, :posts, post)}
