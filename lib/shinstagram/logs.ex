@@ -21,6 +21,25 @@ defmodule Shinstagram.Logs do
     Repo.all(Log)
   end
 
+  @doc """
+  Returns the latest logs.
+
+  ## Examples
+
+      iex> list_logs()
+      [%Log{}, ...]
+
+  """
+  def list_recent_logs_with_profile(limit) do
+    Repo.all(
+      from(p in Log,
+        order_by: [desc: p.inserted_at],
+        limit: ^limit
+      )
+    )
+    |> Repo.preload(:profile)
+  end
+
   def list_logs_by_profile(%Shinstagram.Profiles.Profile{id: id}) do
     from(l in Log, where: l.profile_id == ^id, order_by: {:desc, :inserted_at}, limit: 100)
     |> Repo.all()

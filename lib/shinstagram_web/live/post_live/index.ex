@@ -1,4 +1,5 @@
 defmodule ShinstagramWeb.PostLive.Index do
+  alias Shinstagram.Logs
   use ShinstagramWeb, :live_view
 
   alias Shinstagram.Profiles
@@ -16,7 +17,7 @@ defmodule ShinstagramWeb.PostLive.Index do
     {:ok,
      socket
      |> stream(:posts, Timeline.list_recent_posts(100))
-     |> stream(:logs, [])}
+     |> stream(:logs, Logs.list_recent_logs_with_profile(50))}
   end
 
   def handle_info({"profile_activity", _event, log}, socket) do

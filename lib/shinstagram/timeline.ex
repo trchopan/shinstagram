@@ -13,7 +13,6 @@ defmodule Shinstagram.Timeline do
   require Logger
 
   @model "gpt-4o"
-  @dumb_model "gpt-3.5-turbo"
 
   def log(message) do
     Logger.info(message)
@@ -94,8 +93,6 @@ defmodule Shinstagram.Timeline do
     """
     |> chat_completion()
   end
-
-  alias Shinstagram.Agents
 
   @doc """
   Given a profile, generate a post.
